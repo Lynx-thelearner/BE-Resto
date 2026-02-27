@@ -7,7 +7,7 @@ from pydantic import BaseModel, ValidationError
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 import os
-from orm_models import RoleEnum, User
+from orm_models import RoleEnum, User, BlacklistedToken
 from app.core.deps import get_db
 
 load_dotenv()
@@ -45,12 +45,21 @@ def create_access_token(subject: str, claims: Dict | None = None, expires_delta:
     
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-def verify_token(token: str = Depends(oauth2_scheme)) -> TokenData:
+def verify_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> TokenData:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+    # Cek apakah token sudah di-blacklist (logout)
+    blacklisted = db.query(BlacklistedToken).filter(BlacklistedToken.token == token).first()
+    if blacklisted:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token sudah tidak valid. Silakan login kembali.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
     try:
         #Decode token

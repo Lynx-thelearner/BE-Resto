@@ -158,4 +158,10 @@ class Payment(Base):
     paid_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     
     order = relationship("Orders", back_populates="payment")
-    
+
+class BlacklistedToken(Base):
+    __tablename__ = "blacklisted_token"
+
+    id = Column(Integer, primary_key=True, index=True)
+    token = Column(String(500), unique=True, nullable=False, index=True)
+    blacklisted_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))

@@ -3,7 +3,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from app.core.security import verify_password
-from orm_models import User
+from orm_models import User, BlacklistedToken
 from app.core.auth import create_access_token, Token
 
 def authenticate_user(db: Session, username: str, password: str) -> Optional[User]:
@@ -46,3 +46,17 @@ def login_user(db: Session, username: str, password: str) -> Token:
     )
 
     return Token(access_token=access_token, token_type="bearer")
+
+
+def logout_user(db: Session, token: str):
+    """Blacklist the current token so it can't be used again."""
+    # Cek apakah token sudah di-blacklist
+    existing = db.query(BlacklistedToken).filter(BlacklistedToken.token == token).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Token sudah tidak valid.")
+
+    blacklisted = BlacklistedToken(token=token)
+    db.add(blacklisted)
+    db.commit()
+
+    return {"detail": "Berhasil logout."}
