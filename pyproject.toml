@@ -1,0 +1,16 @@
+[project]
+name = "resto"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.17.2",
+    "bcrypt==4.3.0",
+    "dotenv>=0.9.9",
+    "fastapi[standard]>=0.128.0",
+    "passlib>=1.7.4",
+    "psycopg2>=2.9.11",
+    "python-dotenv>=1.2.1",
+    "python-jose>=3.5.0",
+]

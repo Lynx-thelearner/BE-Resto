@@ -1,0 +1,13 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+alembic
+alembic.ini
+
+# Virtual environments
+.venv
+.env
