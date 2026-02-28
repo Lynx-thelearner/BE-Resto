@@ -7,7 +7,7 @@ from app.core.security import hash_password
 from passlib.context import CryptContext
 
 def get_all_pegawai(db: Session) -> List[Pegawai]:
-    return db.query(Pegawai).all()
+    return db.query(Pegawai).order_by(Pegawai.id.asc()).all()
 
 #=====================Main Function=======================
 def create_pegawai(db: Session, payload: PegawaiCreate, user_id: int):

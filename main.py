@@ -14,15 +14,10 @@ app = FastAPI(
 
 # Middleware CORS
 
-origins = [
-    "http://localhost:8000/",       # Vue lewat nginx
-    "http://localhost:3000/",       # kalau kamu running vite dev
-    "https://9b48d3833802.ngrok-free.app/",  # URL ngrok backend
-]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

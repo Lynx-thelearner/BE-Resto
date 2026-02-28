@@ -18,7 +18,7 @@ def _generate_order_number() -> str:
 
 #=================Getter=================================
 def get_all_orders(db: Session) -> List[Orders]:
-    return db.query(Orders).all()
+    return db.query(Orders).order_by(Orders.created_at.desc()).all()
 
 def get_order_by_id(db: Session, order_id: int) -> Optional[Orders]:
     return db.query(Orders).filter(Orders.id == order_id).first()

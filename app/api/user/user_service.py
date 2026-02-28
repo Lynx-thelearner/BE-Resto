@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 
 #=================Getter=================================
 def get_all_user(db: Session) -> List[User]:
-    return db.query(User).all()
+    return db.query(User).order_by(User.id.asc()).all()
 
 def get_user_by_id(db: Session, user_id: int) -> User | None:
     return db.query(User).filter(User.id == user_id).first()

@@ -7,6 +7,7 @@ from .menu import menu_router
 from .order import order_router
 from .payment import payment_router
 from .stok_harian import stok_harian_router
+from .dashboard import dashboard_router
 
 routers = [
     auth_router.router,
@@ -18,4 +19,5 @@ routers = [
     order_router.router,
     payment_router.router,
     stok_harian_router.router,
+    dashboard_router.router,
 ]
